@@ -1,0 +1,16 @@
+# Writing the mapper
+#!/usr/bin/env python3
+import sys
+
+# Mapper function to extract the request type (GET, POST, etc.)
+def mapper():
+    for line in sys.stdin:
+        parts = line.split()
+        if len(parts) > 5:
+            # The request part starts with "GET /path HTTP/1.1"
+            request_part = parts[5].strip('"')  # Extract the request method
+            if request_part in ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS', 'HEAD']:
+                print(f"{request_part}\t1")  # Emit request type with count 1
+
+if __name__ == "__main__":
+    mapper()
