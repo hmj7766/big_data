@@ -1,0 +1,38 @@
+# Writing the reducer
+#!/usr/bin/env python3
+import sys
+
+current_request = None
+current_count = 0
+total_count = 0
+request_counts = {}
+
+# Reducer function to count occurrences of each request type
+def reducer():
+    global current_request, current_count, total_count
+
+    for line in sys.stdin:
+        request, count = line.strip().split('\t')
+        count = int(count)
+        total_count += count  # Update the total number of requests
+
+        if current_request == request:
+            current_count += count
+        else:
+            if current_request:
+                # Store the completed request type's count
+                request_counts[current_request] = current_count
+            current_request = request
+            current_count = count
+
+    # Don't forget to save the last request type
+    if current_request:
+        request_counts[current_request] = current_count
+
+    # Output the percentage of each request type
+    for request, count in request_counts.items():
+        percentage = (count / total_count) * 100
+        print(f"{request}\t{percentage:.2f}%")
+
+if __name__ == "__main__":
+    reducer()
