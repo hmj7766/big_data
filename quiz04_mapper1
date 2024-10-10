@@ -1,4 +1,3 @@
-# Writing the mapper
 #!/usr/bin/env python3
 import sys
 
@@ -6,11 +5,19 @@ import sys
 def mapper():
     for line in sys.stdin:
         parts = line.split()
-        if len(parts) > 5:
-            # The request part starts with "GET /path HTTP/1.1"
-            request_part = parts[5].strip('"')  # Extract the request method
+        
+        # Debugging: Check if line is split as expected
+        if len(parts) < 6:
+            continue  # Skip lines that don't match the expected format
+        
+        try:
+            # Extract the request method, which should be the 6th element (index 5)
+            request_part = parts[5].strip('"')  # Remove surrounding quotes
             if request_part in ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS', 'HEAD']:
                 print(f"{request_part}\t1")  # Emit request type with count 1
+        except IndexError:
+            # Debugging: Print a warning if the expected format is not found
+            print(f"Warning: Malformed line: {line}", file=sys.stderr)
 
 if __name__ == "__main__":
     mapper()
