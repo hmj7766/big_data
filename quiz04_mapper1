@@ -6,7 +6,7 @@ def mapper():
     for line in sys.stdin:
         parts = line.split()
         
-        # Debugging: Check if line is split as expected
+        # Check if line is split as expected
         if len(parts) < 6:
             continue  # Skip lines that don't match the expected format
         
